@@ -17,13 +17,30 @@ public class Node {
 //    int green;
 //    int blue;
 
-    private List<Node> neighbors;
+    static List<Node> neighbors;
+    static Color rgb;
+
+    static Color color;
 
     public Node(int x, int y, Color rgb) {
         this.next = null;
+        this.rgb = rgb;
         this.neighbors = new ArrayList<>();
         this.x = x;
         this.y = y;
+    }
+
+    public Color getColor() {
+        return rgb;
+    }
+
+
+    public List<Node> getRowNodes() {
+        return neighbors;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public void addNode(int x, int y, Color rgb) {
@@ -48,7 +65,7 @@ public class Node {
         return this.next;
     }
 
-
+}
 //    public int getColor() {
 //        // Create a Color object with the RGB values of the node
 //        Color color = new Color(red, green, blue);
