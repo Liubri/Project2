@@ -49,14 +49,3 @@ public class Node {
     }
 
 
-//    public int getColor() {
-//        // Create a Color object with the RGB values of the node
-//        Color color = new Color(red, green, blue);
-//        // Get the RGB components from the Color object and calculate their sum
-//        return color.getRed() + color.getGreen() + color.getBlue();
-//    }
-
-//    public int calculateAvgRGBvalue(){
-//        return getColor()/3;
-//    }
-//}
