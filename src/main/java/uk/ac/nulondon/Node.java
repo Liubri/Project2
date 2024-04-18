@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Node {
     public String data;
-    Node head;
-    Node next;
-    Node previous;
+    static Node head;
+    static  Node next;
+    static  Node previous;
 
 
     int x;
@@ -17,7 +17,7 @@ public class Node {
 //    int green;
 //    int blue;
 
-    static List<Node> neighbors;
+
     static Color rgb;
 
     static Color color;
@@ -25,7 +25,7 @@ public class Node {
     public Node(int x, int y, Color rgb) {
         this.next = null;
         this.rgb = rgb;
-        this.neighbors = new ArrayList<>();
+
         this.x = x;
         this.y = y;
     }
@@ -35,9 +35,6 @@ public class Node {
     }
 
 
-    public List<Node> getRowNodes() {
-        return neighbors;
-    }
 
     public void setColor(Color color) {
         this.color = color;
@@ -65,6 +62,15 @@ public class Node {
         return this.next;
     }
 
+    public int getDSWidth() {
+        int count = 0;
+        Node current = Node.head;
+        while (current.next!=null) {
+            count++;
+            current = current.next;
+        }
+        return count;
+    }
 }
 
 

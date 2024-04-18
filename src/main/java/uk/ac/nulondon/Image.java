@@ -3,15 +3,16 @@ package uk.ac.nulondon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 public class Image {
-    static List<Node> pixelList;
-    public int width;
-    public int height;
+//    public static ArrayList<Node> leftColumn;
+
+    ArrayList<Node> leftColumn;
+    public static int width;
+    public static int height;
 
     static Image image;
     File ogFile;
@@ -29,6 +30,7 @@ public class Image {
             width = oldImg.getWidth();
             height = oldImg.getHeight();
 
+
         } catch (IOException e) {
             System.out.println("Error loading image: " + e.getMessage());
         }
@@ -38,8 +40,12 @@ public class Image {
     }
 
 
+
+
+
     //Data Structure for Image
     public Image (BufferedImage image) {
+         leftColumn = new ArrayList<>();
         for (int y = 0; y < image.getHeight(); y++) {
 
             Color colorCol = new Color(image.getRGB(0, y));
@@ -47,7 +53,7 @@ public class Image {
             // Node leftMostNode = new Node(0, 0 + i,  image.getRGB(0,));
             Node leftMostNode = new Node(0, y, colorCol);
 
-            pixelList.add(leftMostNode);
+            leftColumn.add(leftMostNode);
             for (int x = 0; x < image.getWidth(); x++) {
 
                 Color colorRow = new Color(image.getRGB(x,y ));
@@ -56,6 +62,12 @@ public class Image {
             }
         }
     }
+
+    public ArrayList<Node> getLeftColumnTest() {
+        return leftColumn;
+    }
+
+
 
     public BufferedImage getBufferedImage() {
 
@@ -101,5 +113,7 @@ public class Image {
         }
         return blueGrid;
     }
+
+
 
 }

@@ -1,17 +1,26 @@
 package uk.ac.nulondon;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 
 public class EditingImage {
 
-    private Image img;
-    private List<List<Integer>> grid;
+    Image img;
+    private ArrayList<ArrayList<Integer>> grid;
+    static ArrayList<ArrayList<Pair>> previousSeams;
+
+    static ArrayList<ArrayList<Pair>> currentSeams;
+
+    static double[] previousValues;
+
+    double[] currentValues;
+
+    static int counter = 0;
 
     static int counter = 0;
 
@@ -19,10 +28,9 @@ public class EditingImage {
         this.img = img;
     }
 
-    public EditingImage(List<List<Integer>> grid){
+    public EditingImage(ArrayList<ArrayList<Integer>> grid) {
         this.grid = grid;
     }
-
 
 
 //
@@ -91,34 +99,61 @@ public class EditingImage {
     }
 
 
-
     //Issue with looping
-//    public BufferedImage convertToBufferedImage(List<Node> leftColumn) {
-//        BufferedImage newBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-//        for (int y = 0; y < height; y++) {
-//            Color color = leftColumn.get(y).getColor();
-//            newBuffer.setRGB(0, y, color.getRGB());
-//
-//            for (int y = 0; y < height; y++) {
-//                Node leftNode = leftColumn.get(y);
-//                List<Node> rowNodes = leftNode.getRowNodes();
-//                for (int x = 0; x < rowNodes.size(); x++) {
-//                    Color color1 = rowNodes.get(x).getColor();
-//                    newBuffer.setRGB(x + 1, y, color1.getRGB());
-//                }
-//            }
-//
-//        }
-//        return newBuffer;
-//    }
 
+    public BufferedImage converToBufferImage(ArrayList<Node> leftColumn) {
+        int DSheight = leftColumn.size();
+        int DSwidth = leftColumn.get(0).getDSWidth();
+
+        BufferedImage bufferedImage = new BufferedImage(DSwidth, DSheight, BufferedImage.TYPE_INT_RGB);
+
+        for (int y = 0; y < DSheight; y++) {
+            Node current = leftColumn.get(y);
+            int x = 0;
+//            for(int x = 0; x<DSwidth; x++){
+            while (current != null) {
+                bufferedImage.setRGB(x, y, current.getColor().getRGB());
+                current = current.getNextNode();
+                x++;
+            }
+        }
+        return bufferedImage;
+    }
+
+    public int counter() {
+        counter++;
+        return counter;
+    }
+
+    /**
+     * Saves the new image after every change
+     *
+     * @param newBuffer
+     * @param counter
+     */
+    public void saveNewImage(BufferedImage newBuffer, int counter, boolean finalVersion) {
+        try {
+            if (!finalVersion) {
+                // Write the BufferedImage to a PNG file
+                File f = new File("src/main/java/uk/ac/nulondon/tempImg" + counter + ".png");
+                ImageIO.write(newBuffer, "png", f);
+                System.out.println("Image saved successfully");
+            } else {
+                File f = new File("src/main/java/uk/ac/nulondon/newImg" + ".png");
+                ImageIO.write(newBuffer, "png", f);
+                System.out.println("Image saved successfully");
+            }
+        } catch (IOException e) {
+            System.out.println("Error with file: " + e.getMessage());
+        }
+    }
 
 
     /**
      * Add an element to a collection
      */
-    private static <T> List<T> concat(T element, Collection<? extends T> elements) {
-        List<T> result = new ArrayList<>();
+    private static <T> ArrayList<T> concat(T element, Collection<? extends T> elements) {
+        ArrayList<T> result = new ArrayList<>();
         result.add(element);
         result.addAll(elements);
         return result;
@@ -129,6 +164,7 @@ public class EditingImage {
      * for this energy grid
      */
 
+<<<<<<< Updated upstream
     public List<Pair> getSeam(List<List<Integer>> grid, int width, int height) {
 //        int width = img.width;
 //        int height = img.height;
@@ -136,16 +172,23 @@ public class EditingImage {
         double[] currentValues = new double[width];
         List<List<Pair>> previousSeams = new ArrayList<>();
         List<List<Pair>> currentSeams = new ArrayList<>();
+=======
+    public ArrayList<Pair> getSeam(ArrayList<ArrayList<Integer>> grid, int width, int height) {
+        previousValues = new double[width];
+        currentValues = new double[width];
+        previousSeams = new ArrayList<>();
+        currentSeams = new ArrayList<>();
+>>>>>>> Stashed changes
         Pair currentPixel = new Pair(0, 0);
 
         int col = 0;
 
-        // initializing for first row
+
         while (col < width) {
             previousValues[col] = grid.get(0).get(col);
 
-            // one seam per column
-            previousSeams.add(concat(currentPixel, List.of()));
+
+            previousSeams.add(concat(currentPixel, new ArrayList<>()));
             col++;
             currentPixel = new Pair(currentPixel.row, currentPixel.col + 1);
         }
@@ -191,7 +234,7 @@ public class EditingImage {
         // find the seam with the min sum
         double minValue = previousValues[0];
         int minIndex = 0;
-        for (int i = 1; i <width; i++) {
+        for (int i = 1; i < width; i++) {
             if (previousValues[i] < minValue) {
                 minIndex = i;
                 minValue = previousValues[i];
@@ -202,21 +245,61 @@ public class EditingImage {
 
 
     //List<Pair> VariableName = gridName.getSeam();
+<<<<<<< Updated upstream
     public void highLightBlue(List<Node> leftColumn){
         List<Pair> coords = getSeam(Image.blueGrid(img.getBufferedImage()));
         for (Pair coord : coords) {
+=======
+    public void highLightBlue(ArrayList<Node> leftColumn) {
+        List<Pair> seam = getSeam(img.blueGrid(img.getBufferedImage()), img.width, img.height);
+        for (Pair coord : seam) {
+>>>>>>> Stashed changes
             int x = coord.getCol();
             int y = coord.getRow();
 
             if (y >= 0 && y < leftColumn.size()) {
-                Node node = leftColumn.get(y);
-                List<Node> rowNodes = node.getRowNodes();
-                if (x >= 0 && x < rowNodes.size()) {
-                    Node targetNode = rowNodes.get(x);
-                    targetNode.setColor(Color.BLUE);
+                Node current = leftColumn.get(y);
+                int index = 0;
+
+                while (current != null) {
+                    if (index == x) {
+                        current.setColor(Color.BLUE);
+                        break;
+                    }
+                    current = current.getNextNode();
+
+                    if (current == null) {
+                        break;
+                    }
+                    index++;
+
                 }
             }
         }
+
+//        public void highlightRed (ArrayList < Node > leftColumn) {
+//            //getSeam(Image.blueGrid(img.getBufferedImage()));
+//            List<Pair> seam = getSeam(img.energyGrid(img.getBufferedImage()), img.width, img.height);
+//            for (Pair coord : seam) {
+//                int x = coord.getCol();
+//                int y = coord.getRow();
+//
+//                if (y >= 0 && y < leftColumn.size()) {
+//                    Node current = leftColumn.get(y);
+//                    int index = 0;
+//                    while (current != null) {
+//                        if (index == x) {
+//                            current.setColor(Color.RED);
+//                            break;
+//                        }
+//                        current = current.getNextNode();
+//
+//
+//                        index++;
+//                    }
+//                }
+//            }
+//        }
     }
 
     public void highlightRed(List<Node> leftColumn) {
@@ -238,8 +321,23 @@ public class EditingImage {
     }
 }
 
-
-
+//    public void undoPrevEdit() {
+//        // Check if there are edits to undo
+//        if (!previousValues.isEmpty() && !previousSeams.isEmpty()) {
+//            // Retrieve the previous seam
+//            ArrayList<Pair> previousSeam = previousSeams.remove(previousSeams.size() - 1);
+//
+//            // Iterate over the pixels in the seam and restore their colors
+//            for (Pair pixel : previousSeam) {
+//                int x = pixel.getCol();
+//                int y = pixel.getRow();
+//                Color color = new Color(oldImg.getRGB(x, y));
+//                oldImg.setRGB(x, y, color.getRGB());
+//            }
+//        }
+//
+//
+//    }
 
 
 
