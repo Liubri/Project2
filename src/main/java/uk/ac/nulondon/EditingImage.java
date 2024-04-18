@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Collection;
 
 public class EditingImage {
-
     Image img;
     private ArrayList<ArrayList<Integer>> grid;
     static ArrayList<ArrayList<Pair>> previousSeams;
@@ -22,8 +21,6 @@ public class EditingImage {
 
     static int counter = 0;
 
-    static int counter = 0;
-
     public EditingImage(Image img) {
         this.img = img;
     }
@@ -31,17 +28,6 @@ public class EditingImage {
     public EditingImage(ArrayList<ArrayList<Integer>> grid) {
         this.grid = grid;
     }
-
-
-//
-//    List<Integer> previous = new ArrayList<>();
-//    List<Integer> prevSeams = new ArrayList<>();
-//    List<Integer> currentVal = new ArrayList<>();
-//    List<Integer> currentSeams = new ArrayList<>();
-//
-//    public ArrayList<Integer>() seamCarving(ArrayList<ArrayList<Integer>> energyGrid){
-//
-//    }
 
     public static class Pair {
         int row;
@@ -67,6 +53,7 @@ public class EditingImage {
 
     /**
      * increases count, called when highlighting, deleting, or undoing
+     *
      * @return
      */
     public int counter() {
@@ -76,31 +63,27 @@ public class EditingImage {
 
     /**
      * Saves the new image after every change
-     * @param newBuffer
-     * @param counter
+     * //     * @param newBuffer
+     * //     * @param counter
      */
-    public void saveNewImage(BufferedImage newBuffer, int counter, boolean finalVersion) {
-        try {
-            if (!finalVersion) {
-                // Write the BufferedImage to a PNG file
-                File f = new File("src/main/java/uk/ac/nulondon/tempImg" + counter + ".png");
-                ImageIO.write(newBuffer, "png", f);
-                System.out.println("Image saved successfully");
-            }
-
-            else {
-                File f = new File("src/main/java/uk/ac/nulondon/newImg" + ".png");
-                ImageIO.write(newBuffer, "png", f);
-                System.out.println("Image saved successfully");
-            }
-        } catch (IOException e) {
-            System.out.println("Error with file: " + e.getMessage());
-        }
-    }
-
-
-    //Issue with looping
-
+//    public void saveNewImage(BufferedImage newBuffer, int counter, boolean finalVersion) {
+//        try {
+//            if (!finalVersion) {
+//                // Write the BufferedImage to a PNG file
+//                File f = new File("src/main/java/uk/ac/nulondon/tempImg" + counter + ".png");
+//                ImageIO.write(newBuffer, "png", f);
+//                System.out.println("Image saved successfully");
+//            }
+//
+//            else {
+//                File f = new File("src/main/java/uk/ac/nulondon/newImg" + ".png");
+//                ImageIO.write(newBuffer, "png", f);
+//                System.out.println("Image saved successfully");
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Error with file: " + e.getMessage());
+//        }
+//    }
     public BufferedImage converToBufferImage(ArrayList<Node> leftColumn) {
         int DSheight = leftColumn.size();
         int DSwidth = leftColumn.get(0).getDSWidth();
@@ -118,11 +101,6 @@ public class EditingImage {
             }
         }
         return bufferedImage;
-    }
-
-    public int counter() {
-        counter++;
-        return counter;
     }
 
     /**
@@ -164,21 +142,13 @@ public class EditingImage {
      * for this energy grid
      */
 
-<<<<<<< Updated upstream
-    public List<Pair> getSeam(List<List<Integer>> grid, int width, int height) {
-//        int width = img.width;
-//        int height = img.height;
-        double[] previousValues = new double[width];
-        double[] currentValues = new double[width];
-        List<List<Pair>> previousSeams = new ArrayList<>();
-        List<List<Pair>> currentSeams = new ArrayList<>();
-=======
+
     public ArrayList<Pair> getSeam(ArrayList<ArrayList<Integer>> grid, int width, int height) {
         previousValues = new double[width];
         currentValues = new double[width];
         previousSeams = new ArrayList<>();
         currentSeams = new ArrayList<>();
->>>>>>> Stashed changes
+
         Pair currentPixel = new Pair(0, 0);
 
         int col = 0;
@@ -244,16 +214,10 @@ public class EditingImage {
     }
 
 
-    //List<Pair> VariableName = gridName.getSeam();
-<<<<<<< Updated upstream
-    public void highLightBlue(List<Node> leftColumn){
-        List<Pair> coords = getSeam(Image.blueGrid(img.getBufferedImage()));
-        for (Pair coord : coords) {
-=======
     public void highLightBlue(ArrayList<Node> leftColumn) {
         List<Pair> seam = getSeam(img.blueGrid(img.getBufferedImage()), img.width, img.height);
         for (Pair coord : seam) {
->>>>>>> Stashed changes
+
             int x = coord.getCol();
             int y = coord.getRow();
 
@@ -302,24 +266,24 @@ public class EditingImage {
 //        }
     }
 
-    public void highlightRed(List<Node> leftColumn) {
-        //getSeam(Image.blueGrid(img.getBufferedImage()));
-        List<Pair> coords = getSeam(Image.energyGrid(img.getBufferedImage()));
-        for (Pair coord : coords) {
-            int x = coord.getCol();
-            int y = coord.getRow();
+//    public void highlightRed(List<Node> leftColumn) {
+//        //getSeam(Image.blueGrid(img.getBufferedImage()));
+//        List<Pair> coords = getSeam(Image.energyGrid(img.getBufferedImage()));
+//        for (Pair coord : coords) {
+//            int x = coord.getCol();
+//            int y = coord.getRow();
+//
+//            if (y >= 0 && y < leftColumn.size()) {
+//                Node node = leftColumn.get(y);
+//                List<Node> rowNodes = node.getRowNodes();
+//                if (x >= 0 && x < rowNodes.size()) {
+//                    Node targetNode = rowNodes.get(x);
+//                    targetNode.setColor(Color.RED);
+//                }
+//            }
+//        }
+//    }
 
-            if (y >= 0 && y < leftColumn.size()) {
-                Node node = leftColumn.get(y);
-                List<Node> rowNodes = node.getRowNodes();
-                if (x >= 0 && x < rowNodes.size()) {
-                    Node targetNode = rowNodes.get(x);
-                    targetNode.setColor(Color.RED);
-                }
-            }
-        }
-    }
-}
 
 //    public void undoPrevEdit() {
 //        // Check if there are edits to undo
@@ -340,5 +304,6 @@ public class EditingImage {
 //    }
 
 
+}
 
 

@@ -10,12 +10,9 @@ public class Node {
     static  Node next;
     static  Node previous;
 
-
     int x;
     int y;
-//    int red;
-//    int green;
-//    int blue;
+
 
 
     static Color rgb;

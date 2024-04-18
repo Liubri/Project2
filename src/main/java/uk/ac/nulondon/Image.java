@@ -8,8 +8,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.Color;
 public class Image {
-//    public static ArrayList<Node> leftColumn;
-
     ArrayList<Node> leftColumn;
     public static int width;
     public static int height;
@@ -29,14 +27,9 @@ public class Image {
             oldImg = ImageIO.read(ogFile);
             width = oldImg.getWidth();
             height = oldImg.getHeight();
-
-
         } catch (IOException e) {
             System.out.println("Error loading image: " + e.getMessage());
         }
-
-
-        //image = new Image(convertToGrid(oldImg));
     }
 
 
@@ -45,19 +38,14 @@ public class Image {
 
     //Data Structure for Image
     public Image (BufferedImage image) {
-         leftColumn = new ArrayList<>();
+        leftColumn = new ArrayList<>();
         for (int y = 0; y < image.getHeight(); y++) {
-
             Color colorCol = new Color(image.getRGB(0, y));
-
             // Node leftMostNode = new Node(0, 0 + i,  image.getRGB(0,));
             Node leftMostNode = new Node(0, y, colorCol);
-
             leftColumn.add(leftMostNode);
             for (int x = 0; x < image.getWidth(); x++) {
-
                 Color colorRow = new Color(image.getRGB(x,y ));
-
                 leftMostNode.addNode(x, 0, colorRow);
             }
         }
@@ -70,7 +58,6 @@ public class Image {
 
 
     public BufferedImage getBufferedImage() {
-
         return oldImg;
     }
 
