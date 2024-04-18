@@ -58,22 +58,9 @@ public class Image {
     }
 
     public BufferedImage getBufferedImage() {
+
         return oldImg;
     }
-
-//    public int getWidth() {
-//        return oldImg.get(0).size();
-//    }
-//
-//    /**
-//     * gets the height of pixelGrid
-//     *
-//     * @return
-//     */
-//    public int getHeight() {
-//        return oldImg.size();
-//    }
-
 
     public ArrayList<ArrayList<Integer>> energyGrid (BufferedImage img) {
         energyGrid = new ArrayList<>(height);
