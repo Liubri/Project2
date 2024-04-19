@@ -10,6 +10,8 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 public class TestRedSeam {
+
+    //Red Seam
     public static void main(String[] args) throws IOException {
 
         String Filepath = "src/main/resources/Beach.png";
