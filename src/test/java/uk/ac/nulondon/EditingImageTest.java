@@ -93,7 +93,7 @@ public class EditingImageTest {
     }
 
     @Test
-    void convertToBufferImageTest(){
+    void convertToBufferImageTest() {
         BufferedImage testImage = new BufferedImage(3, 2, BufferedImage.TYPE_INT_RGB);
         testImage.setRGB(0, 0, Color.RED.getRGB());
         testImage.setRGB(1, 0, Color.GREEN.getRGB());
@@ -112,10 +112,15 @@ public class EditingImageTest {
 
         BufferedImage finalImage = editingImage.convertToBufferImage(testDS);
 
-        Assertions.assertThat(finalImage.getRGB(0,0)).isEqualTo(testImage.getRGB(0,0));
-        Assertions.assertThat(finalImage.getRGB(2,1)).isEqualTo(testImage.getRGB(1,1));
-
+        Assertions.assertThat(finalImage.getRGB(0, 0)).isEqualTo(testImage.getRGB(0, 0));
+        Assertions.assertThat(finalImage.getRGB(2, 1)).isEqualTo(testImage.getRGB(2, 1));
 
     }
+
+    @Test
+    void testremoveBluestCol(){
+
+    }
+
 
 }

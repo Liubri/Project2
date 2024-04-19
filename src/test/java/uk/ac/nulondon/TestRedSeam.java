@@ -1,6 +1,5 @@
 package uk.ac.nulondon;
 
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 
-public class TestBlueSeam {
+public class TestRedSeam {
     public static void main(String[] args) throws IOException {
 
         String Filepath = "src/main/resources/Beach.png";
@@ -22,16 +21,16 @@ public class TestBlueSeam {
         int width = testImage.getWidth();
         int height = testImage.getHeight();
 
-        ArrayList<ArrayList<Integer>> bluegridTest = image.blueGrid(testImage);
+        ArrayList<ArrayList<Integer>> redgridTest = image.energyGrid(testImage);
         ArrayList<Node> testDS = image.convertToDS(testImage);
-        ArrayList<EditingImage.Pair> testSeam = editingImage.getHighestValueSeam(bluegridTest, width, height);
+        ArrayList<EditingImage.Pair> testSeam = editingImage.getSeam(redgridTest, width, height);
 
-        editingImage.highLightBlue(testDS, testSeam);
+        editingImage.highLightRed(testDS, testSeam);
 
         BufferedImage testImage2 = editingImage.convertToBufferImage(testDS);
 
 
-        String filePath = "src/main/resources/BeachBlue.png"; // Change this to the desired path
+        String filePath = "src/main/resources/BeachRed.png"; // Change this to the desired path
         File outputImage = new File(filePath);
         ImageIO.write(testImage2,"png", outputImage);
 

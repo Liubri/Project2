@@ -11,7 +11,7 @@ import java.util.List;
 public class TestEditingImage {
 
     @Test
-    public void TesthighLightBlue(){
+    public void TestingLightBlue(){
         ArrayList<ArrayList<Integer>> grid2 = new ArrayList<>();
         grid2.add(new ArrayList<>(List.of(5, 6, 3)));
         grid2.add(new ArrayList<>(List.of(4, 1, 6)));

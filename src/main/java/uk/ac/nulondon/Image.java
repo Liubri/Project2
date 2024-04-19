@@ -93,6 +93,9 @@ public class Image {
     }
 
 
+
+
+
     public ArrayList<Node> getLeftColumnTest() {
         return leftColumn;
     }
@@ -104,9 +107,9 @@ public class Image {
     }
 
     public ArrayList<ArrayList<Integer>> energyGrid (BufferedImage img) {
-        energyGrid = new ArrayList<>(height);
+        energyGrid = new ArrayList<>();
         for (int y = 0; y < height; y++) {
-            ArrayList<Integer> rowPixels = new ArrayList<Integer>(width);
+            ArrayList<Integer> rowPixels = new ArrayList<Integer>();
             energyGrid.add(rowPixels);
             for (int x = 0; x < width; x++) {
                 int calculatedEnergy = calcEnergy(img, x, y);
@@ -131,7 +134,7 @@ public class Image {
         blueGrid = new ArrayList<>();
 
         for (int y = 0; y < height; y++) {
-            ArrayList<Integer> rowPixels = new ArrayList<Integer>();
+            ArrayList<Integer> rowPixels = new ArrayList<>();
 
             for (int x = 0; x < width; x++) {
                 Color imgColor = new Color(img.getRGB(x, y));
@@ -142,6 +145,7 @@ public class Image {
             blueGrid.add(rowPixels);
         }
         return blueGrid;
+
     }
 
 

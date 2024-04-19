@@ -213,6 +213,73 @@ public class EditingImage {
         return previousSeams.get(minIndex);
     }
 
+    public ArrayList<Pair> getHighestValueSeam(ArrayList<ArrayList<Integer>> grid, int width, int height) {
+        previousValues = new double[width];
+        currentValues = new double[width];
+        previousSeams = new ArrayList<>();
+        currentSeams = new ArrayList<>();
+
+        Pair currentPixel = new Pair(0, 0);
+
+        int col = 0;
+
+        while (col < width) {
+            previousValues[col] = grid.get(0).get(col);
+            previousSeams.add(concat(currentPixel, new ArrayList<>()));
+            col++;
+            currentPixel = new Pair(currentPixel.row, currentPixel.col + 1);
+        }
+
+        // compute values and paths for each row
+        for (int row = 1; row < height; row++) {
+            col = 0;
+            currentPixel = new Pair(row, col);
+            while (col < width) {
+                double bestSoFar = previousValues[col];
+                int ref = col;
+                // check both adjacent pixels
+                // if left exists and is better, update
+                if (col > 0 && previousValues[col - 1] > bestSoFar) {
+                    bestSoFar = previousValues[col - 1];
+                    ref = col - 1;
+                }
+                // if right exists and is better, update
+                if (col < width - 1 && previousValues[col + 1] > bestSoFar) {
+                    bestSoFar = previousValues[col + 1];
+                    ref = col + 1;
+                }
+
+                // update the value with the current pixel
+                currentValues[col] = bestSoFar + grid.get(currentPixel.row).get(currentPixel.col);
+
+                // append this new pixel to existing seams
+                currentSeams.add(concat(currentPixel, previousSeams.get(ref)));
+
+                col++;
+                // move to neighbor
+                currentPixel = new Pair(currentPixel.row, currentPixel.col + 1);
+            }
+
+            // update previous values/seams
+            // and reset current values/seams
+            previousValues = currentValues;
+            currentValues = new double[width];
+            previousSeams = currentSeams;
+            currentSeams = new ArrayList<>();
+        }
+
+        // find the seam with the max sum
+        double maxValue = previousValues[0];
+        int maxIndex = 0;
+        for (int i = 1; i < width; i++) {
+            if (previousValues[i] > maxValue) {
+                maxIndex = i;
+                maxValue = previousValues[i];
+            }
+        }
+        return previousSeams.get(maxIndex);
+    }
+
 
     public void highLightBlue(ArrayList<Node> leftColumn, ArrayList<Pair> seam) {
 //        List<Pair> seam = getSeam(img.blueGrid(img.getBufferedImage()), img.width, img.height);
@@ -231,30 +298,25 @@ public class EditingImage {
                 pixel.setColor(Color.BLUE);
             }
         }
+    }
 
-//        public void highlightRed (ArrayList < Node > leftColumn) {
-//            //getSeam(Image.blueGrid(img.getBufferedImage()));
-//            List<Pair> seam = getSeam(img.energyGrid(img.getBufferedImage()), img.width, img.height);
-//            for (Pair coord : seam) {
-//                int x = coord.getCol();
-//                int y = coord.getRow();
-//
-//                if (y >= 0 && y < leftColumn.size()) {
-//                    Node current = leftColumn.get(y);
-//                    int index = 0;
-//                    while (current != null) {
-//                        if (index == x) {
-//                            current.setColor(Color.RED);
-//                            break;
-//                        }
-//                        current = current.getNextNode();
-//
-//
-//                        index++;
-//                    }
-//                }
-//            }
-//        }
+    public void highLightRed(ArrayList<Node> leftColumn, ArrayList<Pair> seam) {
+//        List<Pair> seam = getSeam(img.blueGrid(img.getBufferedImage()), img.width, img.height);
+        for (Pair coord : seam) {
+
+            int x = coord.getCol();
+            int y = coord.getRow();
+            int iter = 0;
+
+            Node pixel = leftColumn.get(y);
+            while (pixel != null && iter < x) {
+                pixel = pixel.next;
+                iter++;
+            }
+            if (pixel != null && iter == x) {
+                pixel.setColor(Color.RED);
+            }
+        }
     }
 
 //    public void highlightRed(List<Node> leftColumn) {
@@ -293,6 +355,51 @@ public class EditingImage {
 //
 //
 //    }
+
+
+
+//    public void removeBluestCol(ArrayList<Node> grid) {
+//        int DSheight = grid.size();
+//        int DSwidth = grid.get(0).getDSWidth();
+//
+//        for(int y=0; y<DSheight; y++){
+//            Node currentPixel = grid.get(y);
+//
+//            for(int x = 0; x < DSwidth; x++) {
+//                while(currentPixel.next.rgb != Color.BLUE){
+//                    currentPixel.next = currentPixel.next.next;
+//                }
+//            }
+//        }
+//    }
+
+    public void removeBluestCol(ArrayList<Node> grid) {
+        int DSheight = grid.size();
+        int DSwidth = grid.get(0).getDSWidth();
+
+        for (int y = 0; y < DSheight; y++) {
+            Node currentPixel = grid.get(y);
+            Node prevPixel = null;
+
+            for (int x = 0; x < DSwidth; x++) {
+                if (currentPixel.rgb == Color.BLUE) {
+                    if (prevPixel == null) {
+                        grid.set(y, currentPixel.next);
+                    } else {
+                        prevPixel.next = currentPixel.next;
+                    }
+                } else {
+                    prevPixel = currentPixel;
+                }
+
+                currentPixel = currentPixel.next;
+            }
+        }
+    }
+
+
+
+
 
 
 }
