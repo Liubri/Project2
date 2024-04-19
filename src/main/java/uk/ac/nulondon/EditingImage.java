@@ -84,7 +84,7 @@ public class EditingImage {
 //            System.out.println("Error with file: " + e.getMessage());
 //        }
 //    }
-    public BufferedImage converToBufferImage(ArrayList<Node> leftColumn) {
+    public BufferedImage convertToBufferImage(ArrayList<Node> leftColumn) {
         int DSheight = leftColumn.size();
         int DSwidth = leftColumn.get(0).getDSWidth();
 
@@ -214,30 +214,21 @@ public class EditingImage {
     }
 
 
-    public void highLightBlue(ArrayList<Node> leftColumn) {
-        List<Pair> seam = getSeam(img.blueGrid(img.getBufferedImage()), img.width, img.height);
+    public void highLightBlue(ArrayList<Node> leftColumn, ArrayList<Pair> seam) {
+//        List<Pair> seam = getSeam(img.blueGrid(img.getBufferedImage()), img.width, img.height);
         for (Pair coord : seam) {
 
             int x = coord.getCol();
             int y = coord.getRow();
+            int iter = 0;
 
-            if (y >= 0 && y < leftColumn.size()) {
-                Node current = leftColumn.get(y);
-                int index = 0;
-
-                while (current != null) {
-                    if (index == x) {
-                        current.setColor(Color.BLUE);
-                        break;
-                    }
-                    current = current.getNextNode();
-
-                    if (current == null) {
-                        break;
-                    }
-                    index++;
-
-                }
+            Node pixel = leftColumn.get(y);
+            while (pixel != null && iter < x) {
+                pixel = pixel.next;
+                iter++;
+            }
+            if (pixel != null && iter == x) {
+                pixel.setColor(Color.BLUE);
             }
         }
 

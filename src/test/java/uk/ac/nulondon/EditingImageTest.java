@@ -3,8 +3,12 @@ package uk.ac.nulondon;
 import org.junit.jupiter.api.Test;
 import org.assertj.core.api.Assertions;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.awt.Color;
+
 
 public class EditingImageTest {
 
@@ -86,6 +90,32 @@ public class EditingImageTest {
             Assertions.assertThat(seamPair.getRow()).isEqualTo(expectedPair.getRow());
             Assertions.assertThat(seamPair.getCol()).isEqualTo(expectedPair.getCol());
         }
+    }
+
+    @Test
+    void convertToBufferImageTest(){
+        BufferedImage testImage = new BufferedImage(3, 2, BufferedImage.TYPE_INT_RGB);
+        testImage.setRGB(0, 0, Color.RED.getRGB());
+        testImage.setRGB(1, 0, Color.GREEN.getRGB());
+        testImage.setRGB(2, 0, Color.BLACK.getRGB());
+
+
+        testImage.setRGB(0, 1, Color.BLUE.getRGB());
+        testImage.setRGB(1, 1, Color.BLACK.getRGB());
+        testImage.setRGB(2, 1, Color.BLACK.getRGB());
+
+        Image image = new Image(testImage);
+
+        ArrayList<Node> testDS = image.convertToDS(testImage);
+
+        EditingImage editingImage = new EditingImage(image);
+
+        BufferedImage finalImage = editingImage.convertToBufferImage(testDS);
+
+        Assertions.assertThat(finalImage.getRGB(0,0)).isEqualTo(testImage.getRGB(0,0));
+        Assertions.assertThat(finalImage.getRGB(2,1)).isEqualTo(testImage.getRGB(1,1));
+
+
     }
 
 }

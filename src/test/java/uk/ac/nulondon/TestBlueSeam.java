@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
+
 public class TestBlueSeam {
     public static void main(String[] args) throws IOException {
 
@@ -18,18 +19,21 @@ public class TestBlueSeam {
 
         Image image = new Image(testImage); // Create an instance of Image with BufferedImage
         EditingImage editingImage = new EditingImage(image);
+        int width = testImage.getWidth();
+        int height = testImage.getHeight();
 
-//        List<EditingImage.Pair> seam = editingImage.getSeam(image.blueGrid(testImage), image.width, image.height);
+        ArrayList<ArrayList<Integer>> bluegridTest = image.blueGrid(testImage);
+        ArrayList<Node> testDS = image.convertToDS(testImage);
+        ArrayList<EditingImage.Pair> testSeam = editingImage.getSeam(bluegridTest, width, height);
 
+        editingImage.highLightBlue(testDS, testSeam);
 
-        editingImage.highLightBlue(image.leftColumn);
-
-        editingImage.converToBufferImage(image.leftColumn);
+        BufferedImage testImage2 = editingImage.convertToBufferImage(testDS);
 
 
         String filePath = "src/main/resources/BeachBlue.png"; // Change this to the desired path
         File outputImage = new File(filePath);
-        ImageIO.write(testImage,"png", outputImage);
+        ImageIO.write(testImage2,"png", outputImage);
 
 
     }
